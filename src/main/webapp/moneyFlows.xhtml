@@ -1,0 +1,87 @@
+<ui:composition template="/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+        >
+    <ui:define name="content">
+        <h:form id="form">
+
+            <p:growl id="messages" showDetail="false"/>
+
+            <p:contextMenu for="moneyFlowTable" widgetVar="cMenu">
+                <p:menuitem value="Delete" icon="ui-icon-closethick" actionListener="#{moneyFlowView.deleteRow}"
+                            update="moneyFlowTable"/>
+            </p:contextMenu>
+
+
+            <h:panelGrid columns="4" cellpadding="5" style="margin: 0 auto;" border="0" title="Add new Flow">
+                <h:outputText value="Date: "/>
+                <p:calendar value="#{moneyFlowView.date}" id="popupCal" size="20" pattern="yyyy.MM.dd"/>
+
+                <h:outputText value="Amount: "/>
+                <p:inputText id="newMoneyFlowAmount" label="value" value="#{moneyFlowView.amount}" size="10"/>
+
+                <h:outputText value="Memo: "/>
+                <p:inputText label="memo" value="#{moneyFlowView.memo}" size="20"/>
+
+                <h:outputText value="Category: "/>
+                <p:selectOneMenu value="#{moneyFlowView.categoryName}" editable="true">
+                    <f:selectItems value="#{moneyFlowView.categories}" var="cat" itemLabel="#{cat.name}"/>
+                </p:selectOneMenu>
+                <p:commandButton value="Add" icon="ui-icon-plusthick" update="moneyFlowTable"
+                                 actionListener="#{moneyFlowView.addNewMoneyFlow}"/>
+            </h:panelGrid>
+
+            <p:dataTable id="moneyFlowTable" var="flow" value="#{moneyFlowView.moneyFlows}"
+                         selection="#{moneyFlowView.selectedMoneyFlow}" selectionMode="single"
+                         rowKey="#{flow.id}" editable="true" editMode="cell">
+
+                <p:ajax event="cellEdit" listener="#{moneyFlowView.onCellEdit}" update=":form:messages"/>
+
+                <f:facet name="header">
+                    Flows
+                </f:facet>
+
+                <p:column headerText="Date" style="width:10%">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{flow.date}"/></f:facet>
+                        <f:facet name="input"><p:calendar style="width:100%" value="#{flow.date}" pattern="yyyy.MM.dd"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Category" style="width:15%">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{flow.category.name}"/></f:facet>
+                        <f:facet name="input">
+                            <p:selectOneMenu style="width:100%" value="#{flow.category}">
+                                <f:selectItems value="#{moneyFlowView.categories}" var="cat" itemLabel="#{cat.name}"
+                                               itemValue="#{cat.name}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Memo" style="width:50%">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{flow.memo}"/></f:facet>
+                        <f:facet name="input"><h:inputText style="width:100%" value="#{flow.memo}"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Amount" style="width:25%">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{flow.amount}"/></f:facet>
+                        <f:facet name="input"><h:inputText style="width:100%" value="#{flow.amount}"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <f:facet name="footer">
+                </f:facet>
+
+
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,34 @@
+<ui:composition
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+	<p:menu>
+		<p:submenu label="">
+			<p:menuitem value="Budget" outcome="budget"/>
+			<p:menuitem value="Reports"/>
+			<p:menuitem value="All accounts"/>
+		</p:submenu>
+	</p:menu>
+	<p:panel toggleable="true" header="MoneyBoxes">
+		<p:dataTable var="box" value="#{menuBean.moneyBoxes}" id="moneyBoxes">
+			<p:column>
+				<h:outputText value=""/>
+				<p:commandLink id="ajax" update=":centerPage" action="#{moneyFlowView.show(box)}" style="margin-right:20px;">
+					<h:outputText value="#{box.name}" />
+				</p:commandLink>
+			</p:column>
+			<p:column>
+				<h:outputText value="#{box.amount}"/>
+			</p:column>
+		</p:dataTable>
+		<p:separator/>
+		<p:inplace label="New MoneyBox" editor="true">
+			<p:inputText label="Name" value="#{menuBean.newMoneyBoxName}" size="10" /> <br/>
+			<p:inputText id="newMoneyBoxAmount" label="Initial value" value="#{menuBean.newMoneyBoxAmount}" size="10"/><br/>
+            <p:message for="newMoneyBoxAmount"/>
+			<p:ajax event="save" listener="#{menuBean.addMoneyBox}" update="moneyBoxes" />
+		</p:inplace>
+	</p:panel>
+
+</ui:composition>

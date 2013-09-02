@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+</h:head>
+<h:body>
+	<p:growl id="messages" autoUpdate="true"/>
+	<p:layout style="min-width:400px;min-height:200px;" id="layout">
+		<p:layoutUnit position="west" resizable="true" size="100" minSize="40" maxSize="200">
+			West
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center">
+			<h:form id="form">
+				<p:panel header="Login">
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputLabel for="username" value="Username:"/>
+						<p:inputText value="#{userSession.username}"
+									 id="username" required="true" label="username"/>
+
+						<h:outputLabel for="password" value="Password:"/>
+						<h:inputSecret value="#{userSession.password}"
+									   id="password" required="true" label="password"/>
+
+						<f:facet name="footer">
+							<p:commandButton id="loginButton" value="Login" action="#{userSession.doLogin}"/>
+                            <p:commandButton value="Invalidate session" action="#{userSession.doLogout}" immediate="true"/>
+						</f:facet>
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+		</p:layoutUnit>
+	</p:layout>
+
+</h:body>
+</html>
