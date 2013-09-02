@@ -17,3 +17,7 @@
 *.iml
 
 *.bak
+.idea
+lib
+out
+target

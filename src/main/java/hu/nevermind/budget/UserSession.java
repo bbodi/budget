@@ -9,6 +9,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class UserSession implements Serializable {
 		userInfo = dao.loadUser(username);
 	}
 
-	public String doLogout() {
+	public void doLogout() throws IOException {
 		loggedIn = false;
 
 		final FacesMessage msg = new FacesMessage("Logout success!", "INFO MSG");
@@ -57,7 +58,7 @@ public class UserSession implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("isLoggedIn");
 		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession().invalidate();
-		return "/login.xhtml?faces-redirect=true";
+		FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()+"/login.xhtml?faces-redirect=true");
 	}
 
 	public String getUsername() {

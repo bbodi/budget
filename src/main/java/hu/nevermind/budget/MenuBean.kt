@@ -15,12 +15,12 @@ import javax.inject.Inject
 import javax.validation.constraints.Digits
 import javax.faces.event.ActionEvent
 import javax.faces.event.ActionListener
+import kotlin.properties.Delegates
 
 Named
 SessionScoped
-open public class MenuBean : Serializable {
+open public class MenuBean : Serializable, ActionListener {
 
-	//ManagedProperty(value = "#{userSession}")
 	open Inject var userSession: UserSession? = null
 
 	Digits(integer=10, fraction = 0)
@@ -30,7 +30,7 @@ open public class MenuBean : Serializable {
 
 	open var menuModel: DefaultMenuModel = DefaultMenuModel()
 
-	PostConstruct open fun initMainMenu() {
+	PostConstruct public open fun initMainMenu() {
 		if (userSession == null) {
 			throw NullPointerException()
 		}
@@ -46,15 +46,22 @@ open public class MenuBean : Serializable {
 
 		val logoutMenuItem = MenuItem()
 		logoutMenuItem.setValue("Logout")
+		logoutMenuItem.setId("logoutButton")
 		//logoutMenuItem.addActionListener(
 		//		ActionListener({event -> userSession?.doLogout()})
 		//)
+		logoutMenuItem.addActionListener(this);
 		logoutMenuItem.setIcon("ui-icon-circlesmall-close")
 		menuModel.addMenuItem(logoutMenuItem)
 	}
 
-	private fun fakk(event: ActionEvent): Unit {
-		userSession?.doLogout()
+	public override fun processAction(event: ActionEvent?) {
+		if (event == null) {
+			throw NullPointerException();
+		}
+		if (event.getComponent()?.getId() == "logoutButton") {
+			userSession?.doLogout()
+		}
 	}
 
 	open fun createAdnimMenu(): MenuItem {
