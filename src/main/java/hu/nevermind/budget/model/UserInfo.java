@@ -11,7 +11,8 @@ import java.util.List;
 @Table(name="USERINFO")
 @NamedQueries({
 		@NamedQuery(name="UserInfo.findUser", query = "SELECT user FROM UserInfo user WHERE user.name = :name"),
-		@NamedQuery(name="UserInfo.findUserByPassword", query = "SELECT user FROM UserInfo user WHERE user.name = :name AND user.password = :password")
+		@NamedQuery(name="UserInfo.findUserByPassword", query = "SELECT user FROM UserInfo user WHERE user.name = :name AND user.password = :password"),
+        @NamedQuery(name="UserInfo.allUsers", query = "SELECT user FROM UserInfo user"),
 })
 public class UserInfo implements Serializable {
 
@@ -30,6 +31,17 @@ public class UserInfo implements Serializable {
 	@OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Category> categories;
 
+    public UserInfo() {
+
+    }
+
+    public UserInfo(String name, String pass, Role role) {
+        this.name = name;
+        this.password = pass;
+        this.role = role;
+    }
+
+    @NotNull
 	public Role getRole() {
 		return role;
 	}
@@ -71,6 +83,12 @@ public class UserInfo implements Serializable {
 	public static boolean existUser(final EntityManager em, final String userName, final String password) {
 		return !em.createNamedQuery("UserInfo.findUserByPassword", UserInfo.class).setParameter("name", userName).setParameter("password", password).getResultList().isEmpty();
 	}
+
+
+    @NotNull
+    public static List<UserInfo> loadAllUsers(final EntityManager em) {
+        return em.createNamedQuery("UserInfo.allUsers").getResultList();
+    }
 
 	@Override
 	public String toString() {

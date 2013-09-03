@@ -1,7 +1,0 @@
-<Resource id="dataSourcee" type="DataSource">
-    JdbcDriver org.hsqldb.jdbcDriver
-    JdbcUrl jdbc:hsqldb:file:c:\primeDb
-    UserName sa
-    Password
-    JtaManaged true
-</Resource>

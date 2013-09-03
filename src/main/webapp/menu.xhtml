@@ -14,7 +14,7 @@
 		<p:dataTable var="box" value="#{menuBean.moneyBoxes}" id="moneyBoxes">
 			<p:column>
 				<h:outputText value=""/>
-				<p:commandLink id="ajax" update=":centerPage" action="#{moneyFlowView.show(box)}" style="margin-right:20px;">
+				<p:commandLink id="ajax" update=":centerPage" action="#{MoneyFlowView.show(box)}" style="margin-right:20px;">
 					<h:outputText value="#{box.name}" />
 				</p:commandLink>
 			</p:column>

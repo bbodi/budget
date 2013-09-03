@@ -20,12 +20,12 @@ public class LoginFilter implements Filter {
 
 	@Override
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws ServletException, IOException {
-		final Boolean isLogined = (Boolean)((HttpServletRequest)request).getSession().getAttribute("isLogined");
+		final Boolean isLoggedIn = (Boolean)((HttpServletRequest)request).getSession().getAttribute("isLoggedIn");
 
 		final boolean isLoginPage = ((HttpServletRequest) request).getRequestURI().endsWith("login.xhtml");
 		final boolean isResourceRequest = ((HttpServletRequest) request).getRequestURI().contains("javax.faces.resource");
-		if ((isLogined == null || !isLogined) && !isLoginPage && !isResourceRequest) {
-			((HttpServletRequest) request).getSession().setAttribute("isLogined", true);
+		if ((isLoggedIn == null || !isLoggedIn) && !isLoginPage && !isResourceRequest) {
+			((HttpServletRequest) request).getSession().setAttribute("isLoggedIn", true);
 			final String contextPath = ((HttpServletRequest)request).getContextPath();
 			((HttpServletResponse) response).sendRedirect(contextPath + "/login.xhtml");
 			return;

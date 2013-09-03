@@ -6,40 +6,43 @@ import org.primefaces.component.submenu.Submenu
 import org.primefaces.component.menuitem.MenuItem
 import javax.inject.Named
 import javax.enterprise.context.SessionScoped
+import hu.nevermind.budget.model.UserInfo
+import java.util.ArrayList
+import org.primefaces.event.CellEditEvent
+import javax.inject.Inject
+import javax.annotation.PostConstruct
 
 Named
 SessionScoped
 open class UsersView : Serializable {
 
-	open fun init() {
-		val model = DefaultMenuModel();
+    Inject public open var dao : DaoBean? = null
 
-		//First submenu  
-		var submenu = Submenu();
-		submenu.setLabel("Dynamic Submenu 1");
+    open public var selectedUser: UserInfo? =  null
 
-		var item = MenuItem();
-		item.setValue("Dynamic Menuitem 1.1");
-		item.setUrl("#");
-		submenu.getChildren()?.add(item);
+    open public var users: MutableList<UserInfo> = ArrayList<UserInfo>()
 
-		model.addSubmenu(submenu);
+    open public var role: String = ""
+    open public var name: String = ""
+    open public var password: String = ""
 
-		//Second submenu  
-		submenu = Submenu();
-		submenu.setLabel("Dynamic Submenu 2");
+    PostConstruct
+    open fun init() {
+        users = dao?.loadUsers() as MutableList<UserInfo>;
+    }
 
-		item = MenuItem();
-		item.setValue("Dynamic Menuitem 2.1");
-		item.setUrl("#");
-		submenu.getChildren()?.add(item);
+    open fun deleteRow() {
 
-		item = MenuItem();
-		item.setValue("Dynamic Menuitem 2.2");
-		item.setUrl("#");
-		submenu.getChildren()?.add(item);
+    }
 
-		model.addSubmenu(submenu);
-	}
+    open fun onCellEdit(event: CellEditEvent) {
+
+    }
+
+    open fun addNewUser() {
+        val newUser = UserInfo(name, password, UserInfo.Role.valueOf(role));
+        dao?.persist(newUser)
+        users.add(newUser)
+    }
 
 }

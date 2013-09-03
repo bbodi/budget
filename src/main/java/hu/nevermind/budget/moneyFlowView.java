@@ -25,7 +25,7 @@ public class MoneyFlowView implements Serializable {
 
 	private List<MoneyFlow> moneyFlows;
 
-	@EJB
+	@Inject
 	private DaoBean dao;
 
 	private MoneyFlow selectedMoneyFlow;

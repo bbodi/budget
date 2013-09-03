@@ -1,0 +1,72 @@
+<ui:composition template="/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+        >
+    <ui:define name="content">
+        <h:form id="form">
+
+            <p:growl id="messages" showDetail="false"/>
+
+            <p:contextMenu for="usersTable" widgetVar="cMenu">
+                <p:menuitem value="Delete" icon="ui-icon-closethick" actionListener="#{usersView.deleteRow}"
+                            update="usersTable"/>
+            </p:contextMenu>
+
+
+            <h:panelGrid columns="2" cellpadding="5" style="margin: 0 auto;" border="0" title="Add new Flow">
+                <h:outputText value="Username: "/>
+                <p:inputText value="#{usersView.name}" size="20"/>
+
+                <h:outputText value="Password: "/>
+                <p:password id="password" label="value" value="#{usersView.password}" size="10"/>
+
+                <h:outputText value="Role: "/>
+                <p:selectOneMenu style="width:100%" value="#{usersView.role}">
+                    <f:selectItem itemValue="Normal" itemLabel="Normal"/>
+                    <f:selectItem itemValue="Admin" itemLabel="Admin"/>
+                </p:selectOneMenu>
+                <p:commandButton value="Add" icon="ui-icon-plusthick" update="usersTable"
+                                 actionListener="#{usersView.addNewUser}"/>
+            </h:panelGrid>
+
+            <p:dataTable id="usersTable" var="user" value="#{usersView.users}"
+                         selection="#{usersView.selectedUser}" selectionMode="single"
+                         rowKey="#{user.name}" editable="true" editMode="cell">
+
+                <p:ajax event="cellEdit" listener="#{usersView.onCellEdit}" update=":form:messages"/>
+
+                <f:facet name="header">
+                    Users
+                </f:facet>
+
+
+                <p:column headerText="Name" style="width:50%">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{user.name}"/></f:facet>
+                        <f:facet name="input"><h:inputText style="width:100%" value="#{user.name}"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Roles" style="width:25%">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{user.role}"/></f:facet>
+                        <f:facet name="input">
+                            <p:selectOneMenu style="width:100%" value="#{user.role}">
+                                <f:selectItem itemValue="Normal" itemLabel="Normal"/>
+                                <f:selectItem itemValue="Admin" itemLabel="Admin"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <f:facet name="footer">
+                </f:facet>
+
+
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

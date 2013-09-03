@@ -8,14 +8,20 @@ import hu.nevermind.budget.model.UserInfo
 import hu.nevermind.budget.model.MoneyBox
 import hu.nevermind.budget.transaction.MoneyFlow
 import javax.ejb.LocalBean
+import javax.inject.Named
 
 LocalBean
 Stateless
+//Named
 open class DaoBean : Serializable {
 	val serialVersionUID: Long = -8977385628111530152
 
 	PersistenceContext(unitName = "persistenceUnit")
 	open var em: EntityManager? = null;
+
+    open fun loadUsers(): MutableList<UserInfo> {
+        return UserInfo.loadAllUsers(em) as MutableList<UserInfo>;
+    }
 
 	open fun persist(final moneyBox: Any) {
 		em?.persist(moneyBox);
