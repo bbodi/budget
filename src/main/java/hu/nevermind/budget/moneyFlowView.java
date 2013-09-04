@@ -46,6 +46,7 @@ public class MoneyFlowView implements Serializable {
 
 	public String show(final MoneyBox moneyBox) {
 		this.moneyBox = moneyBox;
+        this.moneyBox.setMoneyFlows(dao.loadMoneyFlows(moneyBox));
 		moneyFlows = moneyBox.getMoneyFlows();
 		categories = moneyBox.getUserInfo().getCategories();
 		return "/moneyFlows.xhtml?faces-redirect=true";

@@ -27,7 +27,7 @@
                 <p:inputText label="memo" value="#{moneyFlowView.memo}" size="20"/>
 
                 <h:outputText value="Category: "/>
-                <p:selectOneMenu value="#{moneyFlowView.categoryName}" editable="true">
+                <p:selectOneMenu value="#{moneyFlowView.categoryName}" editable="true" style="width:100%">
                     <f:selectItems value="#{moneyFlowView.categories}" var="cat" itemLabel="#{cat.name}"/>
                 </p:selectOneMenu>
                 <p:commandButton value="Add" icon="ui-icon-plusthick" update="moneyFlowTable"
